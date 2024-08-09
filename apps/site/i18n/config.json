@@ -116,7 +116,7 @@
     "langDir": "ltr",
     "dateFormat": "DD.MM.YYYY",
     "hrefLang": "id",
-    "enabled": false,
+    "enabled": true,
     "default": false
   },
   {
@@ -230,6 +230,16 @@
     "default": false
   },
   {
+    "code": "sr",
+    "localName": "Srpski",
+    "name": "Serbian",
+    "langDir": "ltr",
+    "dateFormat": "DD.MM.YYYY",
+    "hrefLang": "sr",
+    "enabled": false,
+    "default": false
+  },
+  {
     "code": "sv",
     "localName": "Svenska",
     "name": "Swedish",
@@ -256,6 +266,16 @@
     "langDir": "ltr",
     "dateFormat": "DD.MM.YYYY",
     "hrefLang": "uk",
+    "enabled": false,
+    "default": false
+  },
+  {
+    "code": "ur",
+    "localName": "اردو",
+    "name": "Urdu",
+    "langDir": "rtl",
+    "dateFormat": "DD/MM/YYYY",
+    "hrefLang": "ur",
     "enabled": false,
     "default": false
   },

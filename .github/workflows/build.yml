@@ -46,7 +46,7 @@ jobs:
 
     steps:
       - name: Harden Runner
-        uses: step-security/harden-runner@17d0e2bd7d51742c71671bd19fa12bdc9d40a3d6 # v2.8.1
+        uses: step-security/harden-runner@0d381219ddf674d61a7572ddd19d7941e271515c # v2.9.0
         with:
           egress-policy: audit
 
@@ -65,18 +65,10 @@ jobs:
         run: echo C:\Program Files\Git\usr\bin>>"%GITHUB_PATH%"
 
       - name: Git Checkout
-        uses: actions/checkout@a5ac7e51b41094c92402da3b24376905380afc29 # v4.1.6
+        uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4.1.7
         with:
-          # Since we checkout the HEAD of the current Branch, if the Pull Request comes from a Fork
-          # we want to clone the fork's repository instead of the base repository
-          # this allows us to have the correct history tree of the perspective of the Pull Request's branch
-          # If the Workflow is running on `merge_group` or `push` events it fallsback to the base repository
-          repository: ${{ github.event.pull_request.head.repo.full_name || github.repository }}
-          # We checkout the branch itself instead of a specific SHA (Commit) as we want to ensure that this Workflow
-          # is always running with the latest `ref` (changes) of the Pull Request's branch
-          # If the Workflow is running on `merge_group` or `push` events it fallsback to `github.ref` which will often be `main`
-          # or the merge_group `ref`
-          ref: ${{ github.event.pull_request.head.ref || github.ref }}
+          # Provides the Pull Request commit SHA or the GitHub merge group ref
+          ref: ${{ github.event.pull_request.head.sha || github.ref }}
           # We only need to fetch the last commit from the head_ref
           # since we're not using the `--filter` operation from turborepo
           # We don't use the `--filter` as we always want to force builds regardless of having changes or not
@@ -85,7 +77,7 @@ jobs:
           fetch-depth: 1
 
       - name: Set up Node.js
-        uses: actions/setup-node@60edb5dd545a775178f52524783378180af0d1f8 # v4.0.2
+        uses: actions/setup-node@1e60f620b9541d16bece96c5465dc8ee9832be0b # v4.0.3
         with:
           # We want to ensure that the Node.js version running here respects our supported versions
           node-version-file: '.nvmrc'

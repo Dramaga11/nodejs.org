@@ -19,8 +19,8 @@ Node.js® é uma ambiente de execução de JavaScript disponível para várias p
       <>
         <DownloadButton release={release}>Descarregar a Node.js (LTS)</DownloadButton>
         <small>
-          Descarrega a Node.js <b>{release.versionWithPrefix}</b>
-          <sup title="Descarrega um instalador da Node.js para a nossa plataforma atual">1</sup> com o suporte de longo prazo.
+          Descarregar a Node.js <b>{release.versionWithPrefix}</b>
+          <sup title="Descarregar um instalador da Node.js para a nossa plataforma atual">1</sup> com o suporte de longo prazo.
           A Node.js também pode ser instalada através dos <a href="/download/package-manager">gestores de pacotes</a>.
         </small>
       </>
@@ -30,9 +30,9 @@ Node.js® é uma ambiente de execução de JavaScript disponível para várias p
   <WithNodeRelease status={['Current']}>
     {({ release }) => (
       <small>
-        Queremos novas funcionalidades mais cedo?
-        Podemos obter a <b>Node.js <DownloadLink release={release}>{release.versionWithPrefix}</DownloadLink></b>
-        <sup title="Descarrega um instalador da Node.js para a nossa plataforma atual">1</sup>.
+        Se estivermos ansiosos quanto as novas funcionalidades,
+        podemos obter a <b>Node.js <DownloadLink release={release}>{release.versionWithPrefix}</DownloadLink></b>
+        <sup title="Descarregar um instalador da Node.js para a nossa plataforma atual">1</sup>.
       </small>
     )}
   </WithNodeRelease>
