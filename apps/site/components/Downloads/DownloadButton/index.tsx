@@ -5,9 +5,10 @@ import classNames from 'classnames';
 import type { FC, PropsWithChildren } from 'react';
 
 import Button from '@/components/Common/Button';
-import { useDetectOS } from '@/hooks';
+import { useClientContext } from '@/hooks';
 import type { NodeRelease } from '@/types';
 import { getNodeDownloadUrl } from '@/util/getNodeDownloadUrl';
+import { getUserBitnessByArchitecture } from '@/util/getUserBitnessByArchitecture';
 
 import styles from './index.module.css';
 
@@ -17,7 +18,13 @@ const DownloadButton: FC<PropsWithChildren<DownloadButtonProps>> = ({
   release: { versionWithPrefix },
   children,
 }) => {
-  const { os, bitness } = useDetectOS();
+  const {
+    os,
+    bitness: userBitness,
+    architecture: userArchitecture,
+  } = useClientContext();
+
+  const bitness = getUserBitnessByArchitecture(userArchitecture, userBitness);
   const downloadLink = getNodeDownloadUrl(versionWithPrefix, os, bitness);
 
   return (

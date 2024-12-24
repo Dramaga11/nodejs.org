@@ -1,7 +1,7 @@
 import type { Meta as MetaObj, StoryObj } from '@storybook/react';
 
 import AvatarGroup from '@/components/Common/AvatarGroup';
-import { getGitHubAvatarUrl } from '@/util/gitHubUtils';
+import { getAuthorWithId } from '@/util/authorUtils';
 
 type Story = StoryObj<typeof AvatarGroup>;
 type Meta = MetaObj<typeof AvatarGroup>;
@@ -23,16 +23,8 @@ const names = [
   'araujogui',
 ];
 
-const unknownAvatar = {
-  src: 'https://avatars.githubusercontent.com/u/',
-  alt: 'unknown-avatar',
-};
-
 const defaultProps = {
-  avatars: [
-    unknownAvatar,
-    ...names.map(name => ({ src: getGitHubAvatarUrl(name), alt: name })),
-  ],
+  avatars: getAuthorWithId(names, true),
 };
 
 export const Default: Story = {

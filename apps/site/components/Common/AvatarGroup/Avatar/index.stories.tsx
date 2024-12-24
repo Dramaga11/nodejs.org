@@ -8,22 +8,15 @@ type Meta = MetaObj<typeof Avatar>;
 
 export const Default: Story = {
   args: {
-    src: getGitHubAvatarUrl('ovflowd'),
-    alt: 'ovflowd',
+    image: getGitHubAvatarUrl('ovflowd'),
+    nickname: 'ovflowd',
   },
 };
 
 export const NoSquare: Story = {
   args: {
-    src: '/static/images/logos/nodejs.png',
-    alt: 'SD',
-  },
-};
-
-export const FallBack: Story = {
-  args: {
-    src: 'https://avatars.githubusercontent.com/u/',
-    alt: 'UA',
+    image: '/static/images/logo-hexagon-card.png',
+    nickname: 'SD',
   },
 };
 
