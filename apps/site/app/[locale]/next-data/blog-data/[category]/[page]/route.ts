@@ -3,10 +3,14 @@ import {
   providePaginatedBlogPosts,
 } from '@/next-data/providers/blogData';
 import { defaultLocale } from '@/next.locales.mjs';
+import type { BlogCategory } from '@/types';
 
-type StaticParams = {
-  params: Promise<{ locale: string; category: string; page: string }>;
+type DynamicStaticPaths = {
+  locale: string;
+  category: BlogCategory;
+  page: string;
 };
+type StaticParams = { params: Promise<DynamicStaticPaths> };
 
 // This is the Route Handler for the `GET` method which handles the request
 // for providing Blog Posts for Blog Categories and Pagination Metadata

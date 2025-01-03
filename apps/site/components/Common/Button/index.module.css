@@ -3,6 +3,7 @@
     relative
     inline-flex
     items-center
+    justify-center
     gap-2
     py-2.5
     text-center
@@ -15,6 +16,12 @@
 
   &[aria-disabled='true'] {
     @apply cursor-not-allowed;
+  }
+
+  &.small {
+    @apply px-3
+      py-2
+      text-sm;
   }
 
   &.neutral {

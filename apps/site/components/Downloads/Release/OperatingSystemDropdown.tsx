@@ -1,68 +1,61 @@
 'use client';
 
 import { useTranslations } from 'next-intl';
-import { useContext, useEffect } from 'react';
+import { useContext, useEffect, useMemo } from 'react';
 import type { FC } from 'react';
 
 import Select from '@/components/Common/Select';
-import Apple from '@/components/Icons/Platform/Apple';
-import Aix from '@/components/Icons/Platform/Generic';
-import Linux from '@/components/Icons/Platform/Linux';
-import Microsoft from '@/components/Icons/Platform/Microsoft';
-import { useDetectOS } from '@/hooks/react-client';
+import { useClientContext } from '@/hooks';
 import { ReleaseContext } from '@/providers/releaseProvider';
 import type { UserOS } from '@/types/userOS';
-import {
-  formatDropdownItems,
-  operatingSystemItems,
-} from '@/util/downloadUtils';
+import { nextItem, OPERATING_SYSTEMS, parseCompat } from '@/util/downloadUtils';
 
 type OperatingSystemDropdownProps = { exclude?: Array<UserOS> };
 
-const OperatingSystemDropdown: FC<OperatingSystemDropdownProps> = ({
-  exclude = [],
-}) => {
-  const { os: userOS } = useDetectOS();
-  const { os, setOS } = useContext(ReleaseContext);
+const OperatingSystemDropdown: FC<OperatingSystemDropdownProps> = () => {
+  const { os } = useClientContext();
+  const release = useContext(ReleaseContext);
   const t = useTranslations();
 
-  // we shouldn't react when "actions" change
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  useEffect(() => setOS(userOS), [userOS]);
-
-  // @TODO: We should have a proper utility that gives
-  // disabled OSs, Platforms, based on specific criteria
-  // this can be an optimisation for the future
-  // to remove this logic from this component
   useEffect(() => {
-    const currentOSExcluded = exclude.includes(os);
-
-    const nonExcludedOS = operatingSystemItems
-      .map(({ value }) => value)
-      .find(os => !exclude.includes(os));
-
-    if (currentOSExcluded && nonExcludedOS) {
-      setOS(nonExcludedOS);
+    if (os !== 'LOADING') {
+      release.setOS(os);
     }
-    // we shouldn't react when "actions" change
+    // Reacts on Client Context change of OS
+    // Only this Hook is allowed to bypass the `setOS` from above
+    // As this Hook is what defined the initial OS state
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [os, exclude]);
+  }, [os]);
+
+  // We parse the compatibility of the dropdown items
+  const parsedOperatingSystems = useMemo(
+    () => parseCompat(OPERATING_SYSTEMS, release),
+    // We only want to react on the change of the Install Method and Version
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [release.installMethod, release.version]
+  );
+
+  // We set the OS to the next available OS when the current
+  // one is not valid anymore due to Version changes
+  useEffect(
+    () => {
+      if (release.os !== 'LOADING') {
+        release.setOS(nextItem(release.os, parsedOperatingSystems));
+      }
+    },
+    // We only want to react on the change of the Version, Install Method and OS
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [release.installMethod, release.version, release.os]
+  );
 
   return (
-    <Select
-      values={formatDropdownItems({
-        items: operatingSystemItems,
-        disabledItems: exclude,
-        icons: {
-          WIN: <Microsoft width={16} height={16} />,
-          MAC: <Apple width={16} height={16} />,
-          LINUX: <Linux width={16} height={16} />,
-          AIX: <Aix width={16} height={16} />,
-        },
-      })}
+    <Select<UserOS>
+      values={parsedOperatingSystems}
+      defaultValue={release.os !== 'LOADING' ? release.os : undefined}
+      loading={release.os === 'LOADING'}
+      placeholder={t('layouts.download.dropdown.unknown')}
       ariaLabel={t('layouts.download.dropdown.os')}
-      defaultValue={os}
-      onChange={value => setOS(value as UserOS)}
+      onChange={value => release.setOS(value)}
       className="min-w-[8.5rem]"
       inline={true}
     />

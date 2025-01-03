@@ -1,8 +1,6 @@
 import nextJest from 'next/jest.js';
 
-const createJestConfig = nextJest({
-  dir: './',
-});
+const createJestConfig = nextJest({ dir: './' });
 
 /** @type {import('jest').Config} */
 const customJestConfig = {
@@ -15,6 +13,7 @@ const customJestConfig = {
   moduleNameMapper: {
     'next/router': '<rootDir>/components/__mocks__/next-router.mjs',
     'next-intl': '<rootDir>/components/__mocks__/next-intl.mjs',
+    'next-intl/server': '<rootDir>/components/__mocks__/next-intl.mjs',
     'github-slugger': '<rootDir>/components/__mocks__/github-slugger.mjs',
     '^@/(.*)$': '<rootDir>/$1',
   },

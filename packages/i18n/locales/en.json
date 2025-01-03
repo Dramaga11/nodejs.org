@@ -19,7 +19,8 @@
           "learn": "Learn",
           "security": "Security",
           "certification": "Certification",
-          "blog": "Blog"
+          "blog": "Blog",
+          "contribute": "Contribute"
         }
       }
     },
@@ -29,7 +30,6 @@
           "links": {
             "gettingStarted": "Getting Started",
             "introductionToNodejs": "Introduction to Node.js",
-            "howToInstallNodejs": "How to install Node.js",
             "howMuchJavascriptDoYouNeedToKnowToUseNodejs": "How much JavaScript do you need to know to use Node.js?",
             "differencesBetweenNodejsAndTheBrowser": "Differences between Node.js and the Browser",
             "theV8JavascriptEngine": "The V8 JavaScript Engine",
@@ -90,9 +90,11 @@
         "modules": {
           "links": {
             "modules": "Modules",
+            "publishingAPackage": "Publishing a package",
             "publishingNodeApiModules": "How to publish a Node-API package",
             "anatomyOfAnHttpTransaction": "Anatomy of an HTTP Transaction",
             "abiStability": "ABI Stability",
+            "howToUseStreams": "How to use streams",
             "backpressuringInStreams": "Backpressuring in Streams"
           }
         },
@@ -135,22 +137,6 @@
         }
       }
     },
-    "downloadList": {
-      "links": {
-        "previousReleases": "Node.js Releases",
-        "packageManager": "Installing Node.js via package manager",
-        "shaSums": {
-          "title": "Signed SHASUMS for release files",
-          "howToVerify": " (How to verify)"
-        },
-        "allDownloads": "All download options",
-        "nightlyReleases": "Nightly builds",
-        "unofficialBuilds": "Unofficial builds",
-        "buildingFromSource": "Building Node.js from source on supported platforms",
-        "installingOnLinux": "Installing Node.js via binary archive",
-        "installingOnWsl": "Install on Windows Subsystem for Linux (WSL)"
-      }
-    },
     "downloadReleasesTable": {
       "changelog": "Changelog",
       "releases": "Releases",
@@ -161,6 +147,11 @@
       "previous": "Previous"
     },
     "common": {
+      "alertBox": {
+        "info": "Info",
+        "warning": "Warning",
+        "danger": "Danger"
+      },
       "breadcrumbs": {
         "navigateToHome": "Navigate to Home"
       },
@@ -201,32 +192,9 @@
       "viewAs": "View as",
       "tableOfContents": "Table of Contents"
     },
-    "downloads": {
-      "changelogModal": {
-        "startContributing": "Start Contributing"
-      }
-    },
     "search": {
       "searchBox": {
         "placeholder": "Start typing..."
-      },
-      "seeAll": {
-        "text": "See all {count} results"
-      },
-      "searchError": {
-        "text": "An error occurred while searching. Please try again later."
-      },
-      "poweredBy": {
-        "text": "Powered by"
-      },
-      "noResults": {
-        "text": "No results found for \"{query}\"."
-      },
-      "emptyState": {
-        "text": "Search something..."
-      },
-      "searchPage": {
-        "title": "You're searching: {query}"
       }
     },
     "blog": {
@@ -277,49 +245,35 @@
       "backToHome": "Back to Home"
     },
     "download": {
-      "selectCategory": "Categories",
-      "categories": {
-        "prebuilt-installer": "Prebuilt Installer",
-        "prebuilt-binaries": "Prebuilt Binaries",
-        "package-manager": "Package Manager",
-        "source-code": "Source Code"
-      },
       "buttons": {
-        "prebuilt": "Download Node.js {version}",
-        "source": "Download Node.js {version} source"
+        "installer": "{os} Installer (.{extension})",
+        "binary": "Standalone Binary (.{extension})"
       },
       "dropdown": {
-        "bitness": "Bitness",
+        "platform": "Platform",
         "os": "Operating System",
         "version": "Version",
-        "platform": "Platform"
+        "installMethod": "Install Method",
+        "packageManager": "Package Manager",
+        "unknown": "Unknown",
+        "platformGroups": {
+          "official": "Recommended (Official)",
+          "unofficial": "Community (Unofficial)"
+        }
       },
       "codeBox": {
-        "unsupportedVersionWarning": "This version is out of maintenance. Find more information here:",
-        "fnmEnvSetup": "configure fnm environment",
-        "systemManagerWarning": "is not a Node.js package manager. Please ensure you already have {packageManager} installed.",
-        "communityWarning": "Package managers and their installation scripts are not maintained by the Node.js project.",
-        "communityWarningReport": "If you encounter issues, please reach out to the package manager's maintainers.",
-        "installsNvm": "installs nvm (Node Version Manager)",
-        "downloadAndInstallNodejsRestartTerminal": "download and install Node.js (you may need to restart the terminal)",
-        "verifiesRightNodejsVersion": "verifies the right Node.js version is in the environment",
-        "verifiesRightNpmVersion": "verifies the right npm version is in the environment",
-        "shouldPrint": "should print `{version}`",
-        "installsFnm": "installs fnm (Fast Node Manager)",
-        "downloadAndInstallNodejs": "download and install Node.js",
-        "activateFNM": "activate fnm",
-        "noteWithColon": "NOTE:",
-        "dockerIsNotNodejsPackageManager": "Docker is not a Node.js package manager.",
-        "PleaseEndureAlreadyInstallOnSystem": "Please ensure it is already installed on your system.",
-        "dockerInstructions": "Follow official instructions at https://docs.docker.com/desktop/",
-        "dockerImagesLink": "Docker images are provided officially at https://github.com/nodejs/docker-node/",
-        "pullsNodejsDockerImage": "pulls the Node.js Docker image",
-        "homebrewIsNotNodejsPackageManager": "Homebrew is not a Node.js package manager.",
-        "homebrewInstructions": "Follow official instructions at https://brew.sh/",
-        "homebrewSupportsIntallingMajorNodejsVersion": "Homebrew only supports installing major Node.js versions and might not support the latest Node.js version from the {version} release line.",
-        "chocolateyIsNotNodejsPackageManager": "Chocolatey is not a Node.js package manager.",
-        "chocolateyInstructions": "Follow official instructions at https://chocolatey.org/",
-        "chocolateyNotMaintanedByNodejs": "Chocolatey is not officially maintained by the Node.js project and might not support the {version} version of Node.js"
+        "unsupportedVersionWarning": "This version is out of maintenance. Please use a currently supported version. <link>Understand EOL support.</link>",
+        "communityPlatformInfo": "Installation methods that involve community software are supported by the teams maintaining that software.",
+        "externalSupportInfo": "If you encounter any issues please visit <link>{platform}'s website</link>",
+        "noScriptDetected": "This page requires JavaScript. You can download Node.js without JavaScript by visiting the <link>releases page</link> directly.",
+        "platformInfo": {
+          "default": "{platform} and their installation scripts are not maintained by the Node.js project.",
+          "nvm": "\"nvm\" is a cross-platform Node.js version manager.",
+          "fnm": "\"fnm\" is a cross-platform Node.js version manager.",
+          "brew": "Homebrew is a package manager for macOS and Linux.",
+          "choco": "Chocolatey is a package manager for Windows.",
+          "docker": "Docker is a containerization platform."
+        }
       }
     }
   }

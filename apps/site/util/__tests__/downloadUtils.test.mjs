@@ -1,159 +1,143 @@
 import {
-  getDownloadCategory,
-  mapCategoriesToTabs,
-  formatDropdownItems,
+  parseCompat,
+  nextItem,
+  OPERATING_SYSTEMS,
+  INSTALL_METHODS,
+  PACKAGE_MANAGERS,
+  PLATFORMS,
 } from '@/util/downloadUtils';
 
-describe('formatDropdownItems', () => {
-  it('should format dropdown items correctly', () => {
-    const items = [
-      { value: 'item1', label: 'Item 1' },
-      { value: 'item2', label: 'Item 2' },
-    ];
-    const disabledItems = ['item2'];
-    const icons = { item1: 'icon' };
-    const defaultIcon = 'defaultIcon';
-
-    const result = formatDropdownItems({
-      items: items,
-      disabledItems: disabledItems,
-      icons: icons,
-      defaultIcon: defaultIcon,
+describe('parseCompat', () => {
+  it('should handle all OS, install methods, and package managers', () => {
+    OPERATING_SYSTEMS.forEach(os => {
+      INSTALL_METHODS.forEach(method => {
+        PACKAGE_MANAGERS.forEach(pm => {
+          const releaseContext = {
+            os: os.value,
+            installMethod: method.value,
+            platform: 'x64',
+            version: 'v16.0.0',
+            release: { status: 'LTS' },
+          };
+          const result = parseCompat([os, pm, method], releaseContext);
+          expect(Array.isArray(result)).toBe(true);
+        });
+      });
     });
-
-    expect(result).toEqual([
-      { value: 'item1', label: 'Item 1', disabled: false, iconImage: 'icon' },
-      {
-        value: 'item2',
-        label: 'Item 2',
-        disabled: true,
-        iconImage: 'defaultIcon',
-      },
-    ]);
   });
 
-  it('should mark all items as disabled when all items are in the disabledItems list', () => {
-    const items = [
-      { value: 'item1', label: 'Item 1' },
-      { value: 'item2', label: 'Item 2' },
-    ];
-    const disabledItems = ['item1', 'item2'];
-
-    const result = formatDropdownItems({
-      items: items,
-      disabledItems: disabledItems,
+  it('should validate platform compatibility', () => {
+    OPERATING_SYSTEMS.forEach(os => {
+      const platforms = PLATFORMS[os.value] || [];
+      platforms.forEach(platform => {
+        const releaseContext = {
+          os: os.value,
+          installMethod: '',
+          platform: platform.value,
+          version: 'v16.0.0',
+          release: { status: 'LTS' },
+        };
+        const result = parseCompat([platform], releaseContext);
+        expect(result.length).toBe(1);
+      });
     });
-
-    expect(result).toEqual([
-      { value: 'item1', label: 'Item 1', disabled: true },
-      { value: 'item2', label: 'Item 2', disabled: true },
-    ]);
   });
 
-  it('should not mark any items as disabled when disabledItems list is empty', () => {
-    const items = [
-      { value: 'item1', label: 'Item 1' },
-      { value: 'item2', label: 'Item 2' },
-    ];
+  describe('extended tests', () => {
+    it('should disable items if OS is not supported', () => {
+      const items = [
+        {
+          value: 'testItem',
+          compatibility: { os: ['MAC'] },
+        },
+      ];
+      const result = parseCompat(items, {
+        os: 'WIN',
+        installMethod: '',
+        platform: '',
+        version: 'v16.0.0',
+        release: { status: 'LTS' },
+      });
+      expect(result[0].disabled).toBe(true);
+    });
 
-    const result = formatDropdownItems({ items: items });
+    it('should disable items if installMethod is not supported', () => {
+      const items = [
+        {
+          value: 'testItem',
+          compatibility: { installMethod: ['NVM'] },
+        },
+      ];
+      const result = parseCompat(items, {
+        os: 'MAC',
+        installMethod: 'FNM',
+        platform: '',
+        version: 'v16.0.0',
+        release: { status: 'Current' },
+      });
+      expect(result[0].disabled).toBe(true);
+    });
 
-    expect(result).toEqual([
-      { value: 'item1', label: 'Item 1', disabled: false },
-      { value: 'item2', label: 'Item 2', disabled: false },
-    ]);
+    it('should disable items if platform is not supported', () => {
+      const items = [
+        {
+          value: 'testItem',
+          compatibility: { platform: ['arm64'] },
+        },
+      ];
+      const result = parseCompat(items, {
+        os: 'LINUX',
+        installMethod: '',
+        platform: 'x64',
+        version: 'v16.0.0',
+        release: { status: 'LTS' },
+      });
+      expect(result[0].disabled).toBe(true);
+    });
+
+    it('should disable items if semver constraint is not satisfied', () => {
+      const items = [
+        {
+          value: 'testItem',
+          compatibility: { semver: ['>= 16.9.0'] },
+        },
+      ];
+      const result = parseCompat(items, {
+        os: 'MAC',
+        installMethod: '',
+        platform: 'x64',
+        version: 'v16.0.0',
+        release: { status: 'LTS' },
+      });
+      expect(result[0].disabled).toBe(true);
+    });
+
+    it('should disable items if release status is not supported', () => {
+      const items = [
+        {
+          value: 'testItem',
+          compatibility: { releases: ['Current'] },
+        },
+      ];
+      const result = parseCompat(items, {
+        os: 'WIN',
+        installMethod: '',
+        platform: 'x64',
+        version: 'v18.0.0',
+        release: { status: 'LTS' },
+      });
+      expect(result[0].disabled).toBe(true);
+    });
   });
 });
 
-describe('getDownloadCategory', () => {
-  it('should return correct category information for /download/current', () => {
-    const result = getDownloadCategory('/download/current');
-
-    expect(result).toEqual({
-      page: 'download',
-      category: 'download',
-      subCategory: 'current',
-    });
-  });
-
-  it('should return correct category information for /download/category/subcategory', () => {
-    const result = getDownloadCategory('/download/category/subcategory');
-
-    expect(result).toEqual({
-      page: 'download',
-      category: 'category',
-      subCategory: 'subcategory',
-    });
-  });
-
-  it('should return correct category information for /download/category', () => {
-    const result = getDownloadCategory('/download/category');
-
-    expect(result).toEqual({
-      page: 'download',
-      category: 'category',
-      subCategory: undefined,
-    });
-  });
-});
-
-describe('mapCategoriesToTabs', () => {
-  it('should return correct tabs for download page when subcategory current', () => {
-    const result = mapCategoriesToTabs({
-      page: 'download',
-      categories: [
-        {
-          category: 'prebuilt-binaries',
-          label: 'Prebuilt Binaries',
-        },
-        {
-          category: 'package-manager',
-          label: 'Package Manager',
-        },
-      ],
-      subCategory: 'current',
-    });
-
-    expect(result).toEqual([
-      {
-        key: 'prebuilt-binaries',
-        label: 'Prebuilt Binaries',
-        link: '/download/prebuilt-binaries/current',
-      },
-      {
-        key: 'package-manager',
-        label: 'Package Manager',
-        link: '/download/package-manager/current',
-      },
-    ]);
-  });
-
-  it('should return correct tabs for download page when subcategory not defined', () => {
-    const result = mapCategoriesToTabs({
-      page: 'download',
-      categories: [
-        {
-          category: 'prebuilt-binaries',
-          label: 'Prebuilt Binaries',
-        },
-        {
-          category: 'package-manager',
-          label: 'Package Manager',
-        },
-      ],
-    });
-
-    expect(result).toEqual([
-      {
-        key: 'prebuilt-binaries',
-        label: 'Prebuilt Binaries',
-        link: '/download/prebuilt-binaries',
-      },
-      {
-        key: 'package-manager',
-        label: 'Package Manager',
-        link: '/download/package-manager',
-      },
-    ]);
+describe('nextItem', () => {
+  it('should find the first valid item if current is invalid', () => {
+    const items = [
+      { value: 'invalid', disabled: true },
+      { value: 'valid', disabled: false },
+    ];
+    expect(nextItem('invalid', items)).toBe('valid');
+    expect(nextItem('valid', items)).toBe('valid');
   });
 });

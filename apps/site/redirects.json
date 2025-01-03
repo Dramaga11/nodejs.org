@@ -265,6 +265,10 @@
       "destination": "/:locale/about/get-involved/:path*"
     },
     {
+      "source": "/:locale/about/get-involved/contribute",
+      "destination": "https://github.com/nodejs/node/blob/main/CONTRIBUTING.md"
+    },
+    {
       "source": "/learn",
       "destination": "/en/learn"
     },
@@ -281,20 +285,44 @@
       "destination": "/:locale/blog/weekly/:path*"
     },
     {
-      "source": "/:locale/download",
-      "destination": "/:locale/download/package-manager"
-    },
-    {
       "source": "/download/package-manager",
-      "destination": "/en/download/package-manager"
-    },
-    {
-      "source": "/:locale/download/current",
-      "destination": "/:locale/download/package-manager/current"
+      "destination": "/en/download"
     },
     {
       "source": "/:locale/learn/getting-started/nodejs-with-typescript",
       "destination": "/:locale/learn/typescript/introduction"
+    },
+    {
+      "source": "/:locale/learn/getting-started/how-to-install-nodejs",
+      "destination": "/:locale/download/package-manager"
+    },
+    {
+      "source": "/:locale/download/package-manager",
+      "destination": "/:locale/download"
+    },
+    {
+      "source": "/:locale/download/package-manager/current",
+      "destination": "/:locale/download/current"
+    },
+    {
+      "source": "/:locale/download/prebuilt-binaries",
+      "destination": "/:locale/download"
+    },
+    {
+      "source": "/:locale/download/prebuilt-binaries/current",
+      "destination": "/:locale/download/current"
+    },
+    {
+      "source": "/:locale/download/prebuilt-installer",
+      "destination": "/:locale/download"
+    },
+    {
+      "source": "/:locale/download/source-code/current",
+      "destination": "/:locale/download/current"
+    },
+    {
+      "source": "/:locale/download/source-code/current",
+      "destination": "/:locale/download/current"
     }
   ],
   "internal": []

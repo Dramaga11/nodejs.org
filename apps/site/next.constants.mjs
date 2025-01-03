@@ -3,16 +3,25 @@
 /**
  * This is used to verify if the current Website is running on a Development Environment
  */
-export const IS_DEVELOPMENT = process.env.NODE_ENV === 'development';
+export const IS_DEV_ENV = process.env.NODE_ENV === 'development';
 
 /**
  * This is used for telling Next.js if the Website is deployed on Vercel
  *
  * Can be used for conditionally enabling features that we know are Vercel only
  *
- * @see https://vercel.com/docs/concepts/projects/environment-variables/system-environment-variables#framework-environment-variables
+ * @see https://vercel.com/docs/projects/environment-variables/system-environment-variables#VERCEL_ENV
  */
-export const VERCEL_ENV = process.env.NEXT_PUBLIC_VERCEL_ENV || undefined;
+export const VERCEL_ENV = process.env.VERCEL_ENV || undefined;
+
+/**
+ * This is used for telling Next.js if we are current during build time or in runtime environment
+ *
+ * Can be used for conditionally enabling features that we know are Vercel only
+ *
+ * @see https://vercel.com/docs/projects/environment-variables/system-environment-variables#VERCEL_REGION
+ */
+export const VERCEL_REGION = process.env.VERCEL_REGION || undefined;
 
 /**
  * This is used for telling Next.js to do a Static Export Build of the Website
@@ -36,8 +45,8 @@ export const ENABLE_STATIC_EXPORT =
  */
 export const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL
   ? process.env.NEXT_PUBLIC_BASE_URL
-  : process.env.NEXT_PUBLIC_VERCEL_URL
-    ? `https://${process.env.NEXT_PUBLIC_VERCEL_URL}`
+  : process.env.VERCEL_URL
+    ? `https://${process.env.VERCEL_URL}`
     : 'https://nodejs.org';
 
 /**
@@ -131,8 +140,7 @@ export const EXTERNAL_LINKS_SITEMAP = [
  * @see https://docs.oramasearch.com/open-source/usage/search/introduction
  */
 export const DEFAULT_ORAMA_QUERY_PARAMS = {
-  mode: 'fulltext',
-  limit: 8,
+  limit: 25,
   threshold: 0,
   boost: {
     pageSectionTitle: 4,
@@ -143,6 +151,15 @@ export const DEFAULT_ORAMA_QUERY_PARAMS = {
     siteSection: {},
   },
 };
+
+/**
+ * The initial Orama Cloud chat suggestions visible in the empty state of the search box.
+ */
+export const DEFAULT_ORAMA_SUGGESTIONS = [
+  'How to install Node.js?',
+  'How to create an HTTP server?',
+  'Upgrading Node.js version',
+];
 
 /**
  * The default batch size to use when syncing Orama Cloud
@@ -160,7 +177,8 @@ export const ORAMA_CLOUD_ENDPOINT =
  * The default Orama Cloud API Key to use when searching with Orama Cloud.
  * This is a public API key and can be shared publicly on the frontend.
  */
-export const ORAMA_CLOUD_API_KEY = process.env.NEXT_PUBLIC_ORAMA_API_KEY || '';
+export const ORAMA_CLOUD_API_KEY =
+  process.env.NEXT_PUBLIC_ORAMA_API_KEY || 'qopIuAERiWP2EZOpDjvczjws7WV40yrj';
 
 /**
  * A GitHub Access Token for accessing the GitHub API and not being rate-limited
@@ -169,13 +187,3 @@ export const ORAMA_CLOUD_API_KEY = process.env.NEXT_PUBLIC_ORAMA_API_KEY || '';
  * Note: This has no NEXT_PUBLIC prefix as it should not be exposed to the Browser.
  */
 export const GITHUB_API_KEY = process.env.NEXT_GITHUB_API_KEY || '';
-
-/**
- * OpenJS Ecosystem Support Program (ESP) partners provide security updates and support for end-of-life and unsupported versions
- *
- * See https://openjsf.org/ecosystem-sustainability-program
- *
- * This is the minimum version Node.js support according to https://nodejs.org/en/about/previous-releases
- */
-export const ESP_SUPPORT_THRESHOLD_VERSION =
-  process.env.ESP_SUPPORT_THRESHOLD_VERSION || '18.0.0';

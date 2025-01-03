@@ -8,12 +8,15 @@ const mockContext = {
   headings: [],
   readingTime: { text: '', minutes: 0, time: 0, words: 0 },
   filename: '',
+  os: 'LOADING',
+  architecture: '',
+  bitness: '',
 };
 
 describe('MatterProvider', () => {
   it('renders the provider with the provided context value', () => {
     render(
-      <MatterProvider>
+      <MatterProvider os="LOADING">
         <MatterContext.Consumer>
           {value => {
             expect(value).toEqual(mockContext);
