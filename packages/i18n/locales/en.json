@@ -12,8 +12,7 @@
       },
       "navBar": {
         "controls": {
-          "open": "Show navigation menu",
-          "close": "Close navigation menu"
+          "toggle": "Toggle navigation menu"
         },
         "links": {
           "about": "About",
@@ -43,6 +42,7 @@
             "nodejsWithWebassembly": "Node.js with WebAssembly",
             "debugging": "Debugging Node.js",
             "profiling": "Profiling Node.js Applications",
+            "fetch": "Fetching data with Node.js",
             "securityBestPractices": "Security Best Practices"
           }
         },
@@ -285,7 +285,8 @@
           "brew": "Homebrew is a package manager for macOS and Linux.",
           "choco": "Chocolatey is a package manager for Windows.",
           "devbox": "Devbox creates isolated, reproducible development environments.",
-          "docker": "Docker is a containerization platform."
+          "docker": "Docker is a containerization platform.",
+          "volta": "\"Volta\" is a cross-platform Node.js version manager."
         }
       }
     },
