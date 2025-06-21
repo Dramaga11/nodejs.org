@@ -4,7 +4,7 @@
   "globalEnv": ["NODE_ENV"],
   "tasks": {
     "dev": {
-      "dependsOn": ["build-blog-data"],
+      "dependsOn": ["build:blog-data"],
       "cache": false,
       "persistent": true,
       "env": [
@@ -25,7 +25,7 @@
       ]
     },
     "build": {
-      "dependsOn": ["build-blog-data", "^build"],
+      "dependsOn": ["build:blog-data", "^build"],
       "inputs": [
         "{app,components,hooks,i18n,layouts,middlewares,pages,providers,types,util}/**/*.{ts,tsx}",
         "{app,components,layouts,pages,styles}/**/*.css",
@@ -116,11 +116,14 @@
     "lint:fix": {
       "cache": false
     },
+    "lint:types": {
+      "cache": false
+    },
     "format": {
       "cache": false
     },
     "test:unit": {
-      "dependsOn": ["build-blog-data"],
+      "dependsOn": ["build:blog-data"],
       "inputs": [
         "{app,components,hooks,i18n,layouts,middlewares,pages,providers,types,util}/**/*.{ts,tsx,mjs}",
         "{app,components,layouts,pages,styles}/**/*.css",
@@ -130,12 +133,12 @@
       ],
       "outputs": ["coverage/**", "junit.xml"]
     },
-    "build-blog-data": {
+    "build:blog-data": {
       "inputs": ["{pages}/**/*.{mdx,md}"],
       "outputs": ["public/blog-data.json"]
     },
     "cloudflare:build:worker": {
-      "dependsOn": ["build-blog-data"],
+      "dependsOn": ["build:blog-data"],
       "inputs": [
         "{app,components,hooks,i18n,layouts,middlewares,pages,providers,types,util}/**/*.{ts,tsx}",
         "{app,components,layouts,pages,styles}/**/*.css",
@@ -166,6 +169,9 @@
         "*.{md,mdx,json,ts,tsx,mjs,yml}"
       ],
       "outputs": [".open-next/**"]
+    },
+    "scripts:release-post": {
+      "cache": false
     }
   }
 }
