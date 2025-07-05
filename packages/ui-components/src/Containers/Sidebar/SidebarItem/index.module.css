@@ -1,0 +1,56 @@
+@reference '../../../styles/index.css';
+
+.item {
+  @apply font-regular
+    relative
+    z-20
+    flex
+    w-full
+    items-center
+    overflow-hidden
+    text-sm
+    text-neutral-800
+    dark:text-neutral-200;
+
+  .label {
+    @apply font-regular
+      p-2
+      text-sm;
+  }
+
+  .progressionIcon {
+    @apply shrink-0
+      fill-neutral-200
+      stroke-white
+      stroke-[4]
+      dark:fill-neutral-800
+      dark:stroke-neutral-950;
+  }
+
+  .icon {
+    @apply size-3
+      text-neutral-500
+      dark:text-neutral-200;
+  }
+
+  &.progression {
+    .label {
+      @apply p-1;
+    }
+  }
+
+  &.active {
+    @apply text-neutral-900
+      dark:text-white;
+
+    .progressionIcon {
+      @apply fill-green-500;
+    }
+
+    &:not(.progression) .label {
+      @apply rounded-sm
+        bg-green-600
+        text-white;
+    }
+  }
+}

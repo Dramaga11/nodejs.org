@@ -1,0 +1,21 @@
+@reference "../../styles/index.css";
+
+.avatarGroup {
+  @apply flex
+    flex-wrap
+    items-center;
+}
+
+.small {
+  > span {
+    @apply -ml-2
+      first:ml-0;
+  }
+}
+
+.medium {
+  > span {
+    @apply -ml-2.5
+      first:ml-0;
+  }
+}
